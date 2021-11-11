@@ -30,7 +30,7 @@ function Navigation() {
                         >
                         Аккаунт
                         </NavLink>
-                        <img className='menu__pic' src={account} alt='иконка аккаунта' />
+                        <button className='menu__pic' src={account} alt='иконка аккаунта' />
                     </div>
                 </nav>
                 <nav className="menu__main-burger">

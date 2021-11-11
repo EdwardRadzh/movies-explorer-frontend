@@ -1,6 +1,16 @@
+import React from 'react';
+import {useHistory} from 'react-router-dom';
 import './MoviesCard.css';
 
 function MoviesCard({img}) {
+    const [page, setPage] = React.useState(false);
+    const history = useHistory();
+    React.useEffect(() => {
+        if (history.location.pathname === '/saved-movies') {
+            setPage(true)
+        }
+    }, [history])
+
     return (
         <article className="movie">
             <a className="movie__link" href="#">
@@ -12,7 +22,7 @@ function MoviesCard({img}) {
                         <h2 className="movie__title">33 слова о дизайне</h2>
                         <p className='movie__duration'>1ч 47м</p>
                     </div>
-                    <button className="movie__btn movie__save-btn" type="button" aria-label="Добавить в избранное"/>
+                    <button className={page ? 'movie__btn movie__saved-btn' : 'movie__btn movie__save-btn'} type="button" aria-label="Добавить в избранное"/>
                 </div>
             </div>
         </article>

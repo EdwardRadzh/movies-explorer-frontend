@@ -8,6 +8,12 @@
     box-shadow: 0px 4px 30px rgba(0, 0, 0, .08);
     display: flex;
     flex-direction: column;
+    transition: transform .05s ease-in;
+}
+
+.movie:hover {
+    transform: scale(1.1);
+    cursor: pointer;
 }
   
 .movie__header {
@@ -64,10 +70,24 @@
 .movie__save-btn {
     background-size: 14px 12px;
     background-image: url('../../images/like_white.svg');
+    transition: opacity .3s ease-in
 }
   
 .movie__save-btn:hover {
     background-image: url('../../images/like_red.svg');
+}
+
+.movie__saved-btn {
+    background-image: url(../../images/movie_saved.svg);
+    visibility: hidden;
+}
+
+.movie__saved-btn:hover {
+    opacity: .5;
+}
+
+.movie:hover .movie__saved-btn{
+    visibility: visible;
 }
   
 /* .movie__save-btn_active{
