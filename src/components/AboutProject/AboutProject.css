@@ -1,0 +1,92 @@
+@import url(../Main/Main.css);
+
+.project__about {
+    display: flex;
+    justify-content: space-between;
+    margin: 70px 0 110px;
+    color: #000;
+}
+  
+.project__description {
+    margin: 0 40px 0 0;
+    flex-basis: 50%;
+}
+  
+.project__description:last-of-type {
+    margin: 0;
+}
+  
+.project__title {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.04em;
+    margin: 0 0 26px;
+}
+  
+.project__text {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 0;
+}
+  
+.project__duration {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) 4fr;
+    grid-template-rows: 36px 31px;
+}
+  
+.project__time {
+    margin: 0;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+  
+.project__time_type_short {
+    background-color: #000;
+    color: #fff;
+}
+  
+.project__time_type_long {
+    background-color: #f2f2f2;
+    color: #000;
+}
+  
+.project__part {
+    font-weight: 500;
+    color: #a0a0a0;
+    align-items: flex-end;
+}
+  
+@media screen and (max-width: 650px) {
+    .project__about {
+      flex-direction: column;
+      margin: 60px 0;
+    }
+  
+    .project__description {
+      margin: 0 0 56px;
+    }
+  
+    .project__title {
+      margin: 0 0 16px;
+      font-size: 18px;
+      line-height: 1.22;
+    }
+  
+    .project__text {
+      font-size: 11px;
+      line-height: 1.45;
+    }
+  
+    .project__time {
+      font-size: 11px;
+      line-height: 1.18;
+    }
+}
