@@ -8,6 +8,7 @@ function Navigation() {
     const [isMenuActive, setIsMenuActive] = React.useState(false);
 
     return (
+        
         <Switch>
             <Route exact path="/">
                 <nav className="menu">

@@ -1,45 +1,122 @@
 import './MoviesCardList.css'
 import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
+import { getSavedMovieCard } from '../../utils/utils';
+import Preloader from '../Preloader/Preloader';
+import { useWindowWidth } from '../../hooks/UseWindowWidth';
 
-import image1 from '../../images/pic1.png'
-import image2 from '../../images/pic2.png'
-import image3 from '../../images/pic3.png'
-import image4 from '../../images/pic4.png'
-import image5 from '../../images/pic5.png'
-import image6 from '../../images/pic6.png'
-import image7 from '../../images/pic7.png'
-import image8 from '../../images/pic8.png'
-import image9 from '../../images/pic9.png'
-import image10 from '../../images/pic10.png'
-import image11 from '../../images/pic11.png'
-import image12 from '../../images/pic12.png'
+function MoviesCardList({
+    isLoading,
+    list,
+    isEmptyList,
+    isError,
+    onLike,
+    onDelete,
+    savedMovies,
+    savedMoviesPage
+}) {
+    console.log( "props", 
+        list,
+        onLike,
+        );
 
-function MoviesCardList() {
+    const width = useWindowWidth();
+    const [showList, setShowList] = React.useState([]);
+    const [cardsShow, setCardsShow] = React.useState({sum: 0, more: 0});
+    const [widthHolder, setWidthHolder] = React.useState(true);
+
+    // устанавливаем кол-во карточек в зависимости от ширины экрана
+    React.useEffect(() => {
+        if (width > 1331){
+            setCardsShow({sum: 8, more: 4});
+        } else if(width <= 1331 && width > 1027){
+            setCardsShow({ sum: 12, more: 3});
+        } else if (width <=1027 && width > 629){
+            setCardsShow({sum: 8, more: 2});
+        } else if (width <= 629){
+            setCardsShow({sum: 5, more: 2});
+        }
+        return () => setWidthHolder(false);  
+    }, [width, widthHolder]);
+
+    // массив карточек в разделе"Фильмы"
+    React.useEffect(() => {
+        if(list.length && !savedMoviesPage){
+            const res = list.filter((item, index) => index < cardsShow.sum);
+            setShowList(res);
+        }
+    }, [list, savedMoviesPage, cardsShow.sum]);
+
+    // отрисовываем карточки для раздела "Фильмы"
+    function getInitialMoviesCards() {
+        console.log('шоулист', showList);
+        return showList.map((item) => {
+            // const likedMovieCard = getSavedMovieCard(savedMovies, item.id);
+            // const likedMovieId = likedMovieCard ? likedMovieCard._id : null;
+            return (
+                <MoviesCard 
+                key={item.id}
+                card={{ ...item}} // добавить _id: likedMovieId 
+                onLike={onLike}
+                onDelete={onDelete}
+                // liked={likedMovieCard ? true : false}
+                />
+            )
+        })
+    }
+
+    // отрисовываем карточки в разделе "Сохранённые фильмы"
+    function getSavedMoviesCards() {
+        return list.map((item) => (
+            <MoviesCard 
+            key={item.id}
+            card={item}
+            savedPage={savedMoviesPage}
+            onDelete={onDelete}
+            />
+        ))
+    }
+
+    // кнопка "ещё"
+    function handleClickMoreButton() {
+        const start = showList.length;
+        const end = start + cardsShow.more;
+        const remainder = list.length - start;
+
+        if(remainder > 0) {
+            const newCards = list.slice(start, end)
+            setShowList([...showList, ...newCards]);
+        }
+    }
+
     return (
         <section className="movies-list">
-             <div className='movies-list__box'>
-                <MoviesCard img={image1}/>
-                <MoviesCard img={image2}/>
-                <MoviesCard img={image3}/>
-                <MoviesCard img={image4}/>
-                <MoviesCard img={image5}/>
-                <MoviesCard img={image6}/>
-                <MoviesCard img={image7}/>
-                <MoviesCard img={image8}/>
-                <MoviesCard img={image9}/>
-                <MoviesCard img={image10}/>
-                <MoviesCard img={image11}/>
-                <MoviesCard img={image12}/>
-            </div>
-            
-            <button
-              className="movies-list__more-btn"
-              type="button"
-              aria-label="Показать еще"
-            >
-            Ещё
-            </button>
+            {isLoading ? (
+                <Preloader />
+            ) : (
+                isEmptyList || isError ? (
+                    <p className={`movies-list__message ${isError && 'movies-list__message_type_error'}`}>
+                        {isError ? `Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз` : 'Ничего не найдено'}
+                    </p>
+                ) : (
+                    <>
+                    <div className='movies-list__box'>
+                        {savedMoviesPage ? getSavedMoviesCards() : getInitialMoviesCards()}
+                    </div>
+                    <button
+                    className={`movies-list__more-btn 
+                    ${(savedMoviesPage || isEmptyList || showList.length === list.length) &&
+                    'movies-list__more-btn_hidden'}`}
+                    type="button"
+                    aria-label="Показать еще"
+                    onClick={handleClickMoreButton}
+                    >
+                    Ещё
+                    </button>
+                    </>
+                )
+            )
+        }
         </section>
     );
 };
