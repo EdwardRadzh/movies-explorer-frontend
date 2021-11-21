@@ -98,7 +98,6 @@ export class MainApi {
     trailerLink,
     nameRU,
     nameEN,
-    thumbnail,
     id,
   }) {
     return fetch(`${this._url}/movies`, {
@@ -110,16 +109,16 @@ export class MainApi {
         duration,
         year,
         description,
-        image,
+        image: `https://api.nomoreparties.co${image.url}`,
         trailer: trailerLink,
         nameRU: nameRU || 'no name',
         nameEN: nameEN || 'no name',
-        thumbnail,
+        thumbnail: `https://api.nomoreparties.co${image.formats.thumbnail.url}`,
         movieId: id,
       })
     })
     .then(res => {
-      if (res.ok) {
+      if (res) {
         return res.json();
       }
       this._checkError();

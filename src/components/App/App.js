@@ -93,14 +93,15 @@ function App() {
             })
     }
 
-    function signIn(email, password) {
+    function signIn({email, password}) {
         return mainApi.login(email, password)
             .then((res) => {
                 if (res.token) {
+                    console.log(email);
                     handleLoggedIn();
                     setUserData(res.email);
                     localStorage.setItem('jwt', res.token);
-                    history.push('/movie');
+                    history.push('/movies');
                 }
             })
             .catch((err) => {
@@ -112,7 +113,7 @@ function App() {
         localStorage.removeItem('jwt');
         setIsLoggedIn(false);
         setCurrentUser({})
-        history.push("/sign-in");
+        history.push("/signin");
         }
 
     // обработчик добавления фильма в избранное
@@ -152,26 +153,31 @@ function App() {
 
                     <Route 
                     path='/movies'
+
+                    ><Header/> <Movies
                     isLoggedIn={isLoggedIn}
                     savedMoviesList={savedMovies}
                     onLikeClick={handleSaveMovie}
-                    onDeleteClick={handleDeleteMovie}
-                    ><Header/> <Movies/>
+                    onDeleteClick={handleDeleteMovie}/>
                     </Route>
 
                     <Route 
                     path='/saved-movies'
-                    isLoggedIn={isLoggedIn}
-                    list={savedMovies}
-                    onDeleteClick={handleDeleteMovie}>
-                        <SavedMovies/>
+                    
+>
+                        <SavedMovies
+                            isLoggedIn={isLoggedIn}
+                            list={savedMovies}
+                            onDeleteClick={handleDeleteMovie}/>
+                            <Header/>   
                     </Route>
 
                     <Route
                     path="/profile"
-                    onSignOut={signOut}
+                    
                     >
-                        <Profile/>
+                        <Profile
+                        onSignOut={signOut}/>
                     </Route>
 
 

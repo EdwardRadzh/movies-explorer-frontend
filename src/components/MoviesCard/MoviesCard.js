@@ -28,7 +28,7 @@ function MoviesCard({ card, onLike, onDelete, liked, savedPage }) {
     return (
         <article className="movie">
             <a className="movie__link" href={card.trailer || card.trailerLink} target='_blank' rel='noreferrer'>
-                <img className="movie__pic" src={`https://api.nomoreparties.co${card.image.url}`} alt="film-name"/>
+                <img className="movie__pic" src={savedPage ? `${card.image}` : `https://api.nomoreparties.co${card.image.url}`} alt="film-name"/>
             </a>
             <div className="movie__header">
                 <div className="movie__info">

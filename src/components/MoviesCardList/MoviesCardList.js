@@ -51,15 +51,15 @@ function MoviesCardList({
     function getInitialMoviesCards() {
         console.log('шоулист', showList);
         return showList.map((item) => {
-            // const likedMovieCard = getSavedMovieCard(savedMovies, item.id);
-            // const likedMovieId = likedMovieCard ? likedMovieCard._id : null;
+            const likedMovieCard = getSavedMovieCard(savedMovies, item.id);
+            const likedMovieId = likedMovieCard ? likedMovieCard._id : null;
             return (
                 <MoviesCard 
                 key={item.id}
-                card={{ ...item}} // добавить _id: likedMovieId 
+                card={{ ...item, _id: likedMovieId}} // добавить _id: likedMovieId 
                 onLike={onLike}
                 onDelete={onDelete}
-                // liked={likedMovieCard ? true : false}
+                liked={likedMovieCard ? true : false}
                 />
             )
         })
