@@ -36,7 +36,7 @@ function MoviesCard({ card, onLike, onDelete, liked, savedPage }) {
                         <h2 className="movie__title">{card.nameRU}</h2>
                         <p className='movie__duration'>{getTimeFromMin(card.duration)}</p>
                     </div>
-                    <button className={`movie__btn ${savedPage ? 'movie__saved-btn' : 'movie__save-btn'}`} type="button" aria-label="Добавить в избранное" onClick={savedPage || liked ? handleDeleteClick : handleLikeClick}/>
+                    <button className={`movie__btn ${savedPage ? 'movie__saved-btn' : 'movie__save-btn'} ${liked && !savedPage ? 'movie__save-btn_active' : ''}`} type="button" aria-label="Добавить в избранное" onClick={savedPage || liked ? handleDeleteClick : handleLikeClick}/>
                 </div>
             </div>
         </article>

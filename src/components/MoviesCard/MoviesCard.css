@@ -77,6 +77,15 @@
     background-image: url('../../images/like_red.svg');
 }
 
+.movie__save-btn_active{
+    background-image: url('../../images/like_red.svg');
+  }
+  
+  .movie__save-btn_active:hover{
+    background-color: #000;
+    opacity: .1;
+  }
+
 .movie__saved-btn {
     background-image: url(../../images/movie_saved.svg);
     visibility: hidden;
