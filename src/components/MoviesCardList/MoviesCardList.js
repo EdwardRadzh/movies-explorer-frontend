@@ -15,10 +15,6 @@ function MoviesCardList({
     savedMovies,
     savedMoviesPage
 }) {
-    console.log( "props", 
-        list,
-        onLike,
-        );
 
     const width = useWindowWidth();
     const [showList, setShowList] = React.useState([]);
@@ -49,7 +45,6 @@ function MoviesCardList({
 
     // отрисовываем карточки для раздела "Фильмы"
     function getInitialMoviesCards() {
-        console.log('шоулист', showList);
         return showList.map((item) => {
             const likedMovieCard = getSavedMovieCard(savedMovies, item.id);
             const likedMovieId = likedMovieCard ? likedMovieCard._id : null;

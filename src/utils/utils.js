@@ -33,7 +33,6 @@ export function filterShortMovies(movies){
   
   // ф-ия получения сохраненной карточки фильма
 export function getSavedMovieCard(arr, id) {
-  console.log(arr, id);
     return arr.find((item) => {
       return item.movieId === id;
     });

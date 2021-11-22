@@ -26,6 +26,18 @@ export class MainApi {
         .then(this._checkError)
     }
 
+    setUserData(name, email) {
+      return fetch(`${this._url}/users/me`, {
+        method: 'PATCH',
+        headers: this._getHeaders(),
+        body: JSON.stringify({
+          name,
+          email
+        })
+      })
+      .then(this._checkError)
+    }
+
     register(name, email, password) {
         return fetch(`${this._url}/signup`, {
             method: 'POST',
@@ -127,16 +139,11 @@ export class MainApi {
 
   //метод удаления карточки пользователя с сервера
   deleteMovie(movieId) {
-    return fetch(`${this._baseUrl}/movies/${movieId}`, {
+    return fetch(`${this._url}/movies/${movieId}`, {
       method: 'DELETE',
       headers: this._getHeaders(),
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      this._checkError();
-    })
+    .then(this._checkError)
   };
 };
 
