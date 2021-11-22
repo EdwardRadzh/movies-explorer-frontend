@@ -39,6 +39,7 @@ export class MainApi {
     }
 
     register(name, email, password) {
+      console.log(email);
         return fetch(`${this._url}/signup`, {
             method: 'POST',
             headers: {

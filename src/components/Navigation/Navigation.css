@@ -56,7 +56,6 @@
   font-size: 12px;
   line-height: 1.33;
   color: #000;
-  margin-right: 30px;
   /* width: 76px; */
   height: 32px;
   display: flex;
@@ -78,6 +77,7 @@
   background-color: #000;
   color: #fff;
   margin: 0;
+  margin-left: 30px;
 }
   
 .menu__link_type_profile {
@@ -143,15 +143,14 @@
 }
 
 .menu__pic {
-  background-color: #F9F9F9;
+  background-image: url(../../images/account_pic.svg);
   background-repeat: no-repeat;
   background-position: center;
+  background-color: white;
+  border-radius: 5%;
   width: 26px;
   height: 30px;
-  background-image: url(../../images/account_pic.svg);
-  border-radius: 4px;
   border: none;
-  outline: none;
 }
 
 .menu__pic:hover {

@@ -60,7 +60,7 @@ function App() {
             handleLoggedIn();
               handleLoggedIn();
               setCurrentUser(data)
-              history.push('/movies');
+            //   history.push('/movies');
         })
         .catch((err) => {
             console.log(err);
@@ -79,13 +79,14 @@ function App() {
         }
     }, [isLoggedIn])
 
-    function signUp({name, email, password}) {
+    function signUp(name, email, password) {
         return mainApi.register(name, email, password)
             .then((res) => {
+                console.log(res);
                 if(res) {
-                    // signIn(res.email, password)
-                    setUserData(res.email, res.name)
-                    history.push('/signin')
+                    signIn(res.email, password)
+                    setUserData(res.name, res.email)
+                    history.push('/movies')
                 }
             })
             .catch((err) => {
@@ -93,7 +94,7 @@ function App() {
             })
     }
 
-    function signIn({email, password}) {
+    function signIn(email, password) {
         return mainApi.login(email, password)
             .then((res) => {
                 if (res.token) {
@@ -154,10 +155,10 @@ function App() {
                     <Header isLoggedIn={isLoggedIn}/>
                     <Switch>
                     <Route path='/signup'>
-                        {isLoggedIn ? <Redirect to='/movies'/> : <Register onRegister={signUp} onLoginState={handleLoginState}/>}
+                        <Register onRegister={signUp} onLoginState={handleLoginState}/>
                      </Route>
                     <Route path='/signin'>
-                        {isLoggedIn ? <Redirect to='/movies'/> : <Login onLogin={signIn} onLoginState={handleLoginState} />}
+                        <Login onLogin={signIn} onLoginState={handleLoginState} />
                     </Route>
 
                     {/* <Route>
@@ -173,32 +174,35 @@ function App() {
                         <Main />
                     </Route>
 
-                    <ProtectedRoute 
-                    exact path='/movies'
-                    isLoggedIn={isLoggedIn}
-                    savedMoviesList={savedMovies}
-                    onLikeClick={handleSaveMovie}
-                    onDeleteClick={handleDeleteMovie}
-                    component={Movies}
-                    >
-                    </ProtectedRoute>
+                    <Route 
+                    path='/movies'
 
-                    <ProtectedRoute 
-                    exact path='/saved-movies' 
+                    // component={Movies}
+                    >
+                    <Movies
+                        isLoggedIn={isLoggedIn}
+                        savedMoviesList={savedMovies}
+                        onLikeClick={handleSaveMovie}
+                        onDeleteClick={handleDeleteMovie}/>
+                    </Route>
+
+                    <Route path='/saved-movies'
+                    // component={SavedMovies}
+                    > <SavedMovies  
                     isLoggedIn={isLoggedIn}
                     list={savedMovies}
                     onDeleteClick={handleDeleteMovie}
-                    component={SavedMovies}
-                    >
-                    </ProtectedRoute>
+                    />
+                    </Route>
 
-                    <ProtectedRoute
-                    exact path="/profile"
+                    <Route path="/profile"
+                    >
+                    <Profile
                     onSignOut={signOut}
                     onUpdate={handleUpdateUser}
-                    component={Profile}
-                    >
-                    </ProtectedRoute>
+                    // component={Profile}
+                    />
+                    </Route>
 
 
                     <Route path="*">

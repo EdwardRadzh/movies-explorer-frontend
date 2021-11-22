@@ -29,11 +29,11 @@ function Navigation({ isLoggedIn }) {
                     Сохраненные фильмы
                     </Link>
                     <div className="menu__account">
-                        <Link to='/profile' className='menu__link menu__link_type_profile page__link menu__pic'
+                        <Link to='/profile' className='menu__link menu__link_type_profile page__link '
                         >
                         Аккаунт
                         </Link>
-                        {/* <button className='menu__pic' src={account} alt='иконка аккаунта' /> */}
+                        <Link to='/profile' className='menu__pic page__link' alt='иконка аккаунта'></Link>
                     </div>
                 </div>
                 <div className="menu__main-burger">
@@ -128,6 +128,9 @@ function Navigation({ isLoggedIn }) {
         
             
             // </nav>
+        
+
+        
     );
 };
 
