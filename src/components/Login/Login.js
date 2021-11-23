@@ -11,15 +11,6 @@ function Login({ onLogin }) {
 
     const {values, errors, isValid, handleChange} = useFormWithValidation();
 
-
-    // function handleChangeEmail(e) {
-    //     setEmail(e.target.value);
-    // }
-
-    // function handleChangePassword(e) {
-    //     setPassword(e.target.value);
-    // }
-
     function handleSubmit(e) {
         e.preventDefault();
         if (!values.email || !values.password) {
@@ -65,10 +56,11 @@ function Login({ onLogin }) {
                         maxLength='20'
                         required
                     />
-                </label>
-                <span id='email-error' className='auth__error'>
+                    <span id='email-error' className='auth__error'>
                         {errors.password || ''}
-                 </span>
+                    </span>
+                </label>
+
                 <button className="auth__btn" disabled={!isValid}>Войти</button>
             </form>
             <p className="auth__subtitle">Ещё не зарегистрированы?

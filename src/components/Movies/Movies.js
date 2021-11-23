@@ -30,7 +30,6 @@ function Movies({ onLikeClick, savedMoviesList, onDeleteClick }) {
         setSearchQuery(value);
         localStorage.setItem('searchQqery', value);
         localStorage.setItem('shortFilms', shortFilms);
-
         if(!allMovies.length) {
             movieApi.getMovies()
             .then((data) => {

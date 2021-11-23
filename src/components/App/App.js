@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
+import { Route, Switch, useHistory, Redirect, useLocation } from 'react-router-dom';
 
 import Main from '../Main/Main';
 import Header from '../Header/Header';
@@ -22,7 +22,6 @@ function App() {
 
     const [currentUser, setCurrentUser] = React.useState({});
     const [loggedIn, setLoggedIn] = React.useState(false);
-    const [loginState, setLoginState] = React.useState(false);
     const [savedMovies, setSavedMovies] = React.useState([]);
     const [userData, setUserData] = React.useState('');
     const [isError, setIsError] = React.useState(false);
@@ -37,12 +36,11 @@ function App() {
         setLoggedIn(true)
     };
 
-    function handleLoginState(state) {
-        setLoginState(state);
-    };
+    // function handleLoginState(state) {
+    //     setLoginState(state);
+    // };
 
     React.useEffect(() => {
-        if (localStorage.getItem('jwt')) {
           const jwt = localStorage.getItem('jwt');
     
           mainApi.checkToken(jwt)
@@ -55,7 +53,7 @@ function App() {
             .catch((err) => {
               console.log(`Произошла ошибка: ${err}`);
             });
-        }
+        
       }, [history, loggedIn]);
 
     React.useEffect(() => {
@@ -108,9 +106,7 @@ function App() {
         return mainApi.login(email, password)
             .then((res) => {
                 if (res.token) {
-                    console.log(email);
                     handleLoggedIn();
-                    setUserData(res.email);
                     localStorage.setItem('jwt', res.token);
                     history.push('/movies');
                 }
@@ -127,11 +123,12 @@ function App() {
     }
 
     function signOut() {
-        localStorage.removeItem('jwt');
+        localStorage.clear();
         setLoggedIn(false);
         setCurrentUser({})
+        setSavedMovies([])
         history.push("/");
-        }
+    }
 
     // обработчик добавления фильма в избранное
   function handleSaveMovie(movie){
@@ -146,8 +143,7 @@ function App() {
   function handleDeleteMovie(movie){
     mainApi.deleteMovie(movie._id)
       .then(() => {
-        console.log(movie.id);
-        const newMoviesList = savedMovies.filter((m) => m.id !== movie.id);
+        const newMoviesList = savedMovies.filter((m) => m._id !== movie._id);
         setSavedMovies(newMoviesList);
       })
       .catch(err => console.log(err))
@@ -224,11 +220,11 @@ function App() {
                     </Route>
 
                     <Route path='/signup'>
-                        <Register onRegister={signUp} onLoginState={handleLoginState}/>
+                        <Register onRegister={signUp} infoMessage={infoMessage} />
                      </Route>
 
                     <Route path='/signin'>
-                        <Login onLogin={signIn} onLoginState={handleLoginState} />
+                        <Login onLogin={signIn} infoMessage={infoMessage} />
                     </Route>
 
                     <Route path="*">

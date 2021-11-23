@@ -62,7 +62,6 @@ function MoviesCardList({
 
     // отрисовываем карточки в разделе "Сохранённые фильмы"
     function getSavedMoviesCards() {
-        console.log(list);
         return list.map((item) => (
             <MoviesCard 
             key={item._id}
@@ -75,7 +74,6 @@ function MoviesCardList({
 
     // кнопка "ещё"
     function handleClickMoreButton() {
-        console.log(cardsShow);
         const start = showList.length;
         const end = start + cardsShow.more;
         const remainder = list.length - start;
