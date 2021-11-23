@@ -1,20 +1,10 @@
 import React from 'react';
-import {useHistory} from 'react-router-dom';
 import './MoviesCard.css';
 import { getTimeFromMin } from '../../utils/utils';
 
 
 function MoviesCard({ card, onLike, onDelete, liked, savedPage }) {
-    // const [page, setPage] = React.useState(false);
-    // const history = useHistory();
-    // React.useEffect(() => {
-    //     if (history.location.pathname === '/saved-movies') {
-    //         setPage(true)
-    //     }
-    // }, [history])
 
-
-      // ---ОБРАБОТЧИКИ---
   //обработчик клика по кнопке лайка
   function handleLikeClick() {
     onLike(card);

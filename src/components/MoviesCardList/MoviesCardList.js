@@ -1,4 +1,4 @@
-import './MoviesCardList.css'
+import './MoviesCardList.css';
 import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { getSavedMovieCard } from '../../utils/utils';
@@ -62,9 +62,10 @@ function MoviesCardList({
 
     // отрисовываем карточки в разделе "Сохранённые фильмы"
     function getSavedMoviesCards() {
+        console.log(list);
         return list.map((item) => (
             <MoviesCard 
-            key={item.id}
+            key={item._id}
             card={item}
             savedPage={savedMoviesPage}
             onDelete={onDelete}
@@ -74,6 +75,7 @@ function MoviesCardList({
 
     // кнопка "ещё"
     function handleClickMoreButton() {
+        console.log(cardsShow);
         const start = showList.length;
         const end = start + cardsShow.more;
         const remainder = list.length - start;

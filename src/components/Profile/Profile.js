@@ -3,8 +3,9 @@ import React from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import Header from '../Header/Header';
 import { useFormWithValidation } from '../../hooks/UseFormValidation';
+import InfoMessage from '../InfoMessage/InfoMessage';
 
-function Profile({ onSignOut, onUpdate }) {
+function Profile({ onSignOut, onUpdate, infoMessage }) {
 
     const currentUser = React.useContext(CurrentUserContext);
     const {values, errors, isValid, handleChange, setValues, setIsValid} = useFormWithValidation();
@@ -27,12 +28,12 @@ function Profile({ onSignOut, onUpdate }) {
     }
   }, [setIsValid, values, currentUser]);
 
-    // // блокируем поля если редактирование прошло успешно
-    // React.useEffect(() => {
-    //     if (infoMessage.isShown && infoMessage.code === 200) {
-    //       setIsInputActive(false);
-    //     }
-    //   }, [setIsInputActive, infoMessage.isShown, infoMessage.code]);
+    // блокируем поля если редактирование прошло успешно
+    React.useEffect(() => {
+        if (infoMessage.isShown && infoMessage.code === 200) {
+          setIsInputActive(false);
+        }
+      }, [setIsInputActive, infoMessage.isShown, infoMessage.code]);
 
       // обработчик отправки формы
   function handleSubmit(e) {
@@ -63,6 +64,9 @@ function Profile({ onSignOut, onUpdate }) {
                         onChange={handleChange}
                         pattern='^[A-Za-zА-Яа-яЁё /s -]+$'
                         disabled={!isInputActive}/>
+                        <span id="name-error" className='profile__error'>
+                             {errors.name ? 'Поле должно быть заполнено и может содержать только латиницу, кириллицу, пробел или дефис' : ''}
+                        </span>
                     </label>
                     <label className="profile__label">E-mail
                         <input 
@@ -76,7 +80,13 @@ function Profile({ onSignOut, onUpdate }) {
                         value={values.email || ''}
                         disabled={!isInputActive}
                         onChange={handleChange}/>
+                        <span id='email-error' className='profile__error'>
+                             {errors.email || ''}
+                        </span>
                     </label>
+
+                    <InfoMessage {...infoMessage} />
+
                     {isInputActive ? (
                         <button
                         className={`profile__btn profile__btn_type_submit app__link`}

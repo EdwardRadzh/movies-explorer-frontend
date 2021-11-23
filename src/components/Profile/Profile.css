@@ -104,7 +104,16 @@
   outline: none;
   border-bottom: 1px solid #000;
 }
-  
+
+.profile__error {
+  color: #FF4062;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 1.2;
+  position: absolute;
+  top: 50px;
+  left: 0;
+}
   
 @media screen and (max-width: 769px) {
   .profile {

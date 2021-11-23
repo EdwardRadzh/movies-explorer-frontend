@@ -29,7 +29,7 @@ function SavedMovies({ list, onDeleteClick, isError }) {
         if (searchQuery) {
             arr.length === 0 ? setIsNothingFound(true) : setFilteredMovies(false);
         }
-  }, [searchQuery, shortFilms, list])
+  }, [list, searchQuery, shortFilms])
     return (
         <section className="saved-movies">
             <SearchForm 
@@ -41,7 +41,8 @@ function SavedMovies({ list, onDeleteClick, isError }) {
             savedMoviesPage={true}
             list={filteredMovies}
             onDelete={onDeleteClick}
-            isError={isError}/>
+            isError={isError}
+            isEmptyList={isNothingFound}/>
         </section>
     );
 };

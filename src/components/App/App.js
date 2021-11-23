@@ -14,19 +14,27 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import ProtectedRoute from '../ProtectedRout/ProtectedRoute';
 import mainApi from '../../utils/MainApi';
+import { SUCCESSFUL_CODE } from '../../utils/constants';
 
 function App() {
 
     const history = useHistory();
 
     const [currentUser, setCurrentUser] = React.useState({});
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const [loggedIn, setLoggedIn] = React.useState(false);
     const [loginState, setLoginState] = React.useState(false);
     const [savedMovies, setSavedMovies] = React.useState([]);
     const [userData, setUserData] = React.useState('');
+    const [isError, setIsError] = React.useState(false);
+
+    const [infoMessage, setInfoMessage] = React.useState({
+        isShown: false,
+        message: '',
+        code: SUCCESSFUL_CODE,
+      });
 
     function handleLoggedIn() {
-        setIsLoggedIn(true)
+        setLoggedIn(true)
     };
 
     function handleLoginState(state) {
@@ -40,7 +48,7 @@ function App() {
           mainApi.checkToken(jwt)
             .then((res) => {
               if(res) {
-                setIsLoggedIn(true);
+                setLoggedIn(true);
                 setUserData(res.email, res.name);
               }
             })
@@ -48,36 +56,32 @@ function App() {
               console.log(`Произошла ошибка: ${err}`);
             });
         }
-      }, [history, isLoggedIn]);
+      }, [history, loggedIn]);
 
     React.useEffect(() => {
-        const token = localStorage.getItem("jwt");
-        if (!token) {
-            return
-        }
-        mainApi.getUserData(token)
+        mainApi.getUserData()
         .then((data) => {
             handleLoggedIn();
-              handleLoggedIn();
-              setCurrentUser(data)
-            //   history.push('/movies');
+            setCurrentUser(data)
         })
         .catch((err) => {
             console.log(err);
         })
-    }, [history, isLoggedIn]);
+    }, [loggedIn]);
 
     React.useEffect(() => {
-        if(isLoggedIn) {
+        if(loggedIn) {
             mainApi.getUsersMovies()
             .then((data) => {
                 setSavedMovies(data)
+                setIsError(false)
             })
             .catch((err) => {
+                setIsError(true)
                 console.log(err);
             })
         }
-    }, [isLoggedIn])
+    }, [loggedIn])
 
     function signUp(name, email, password) {
         return mainApi.register(name, email, password)
@@ -89,8 +93,14 @@ function App() {
                     history.push('/movies')
                 }
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(({ message, statusCode }) => {
+                setInfoMessage({
+                    ...infoMessage,
+                    isShown: true,
+                    message,
+                    code: statusCode,
+                    type: 'register',
+                })
             })
     }
 
@@ -105,14 +115,20 @@ function App() {
                     history.push('/movies');
                 }
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(({ message, statusCode }) => {
+                setInfoMessage({
+                    ...infoMessage,
+                    isShown: true,
+                    message,
+                    code: statusCode,
+                    type: 'login',
+                })
             })
     }
 
     function signOut() {
         localStorage.removeItem('jwt');
-        setIsLoggedIn(false);
+        setLoggedIn(false);
         setCurrentUser({})
         history.push("/");
         }
@@ -130,8 +146,8 @@ function App() {
   function handleDeleteMovie(movie){
     mainApi.deleteMovie(movie._id)
       .then(() => {
-        console.log(savedMovies);
-        const newMoviesList = savedMovies.filter((m) => m._id !== movie._id);
+        console.log(movie.id);
+        const newMoviesList = savedMovies.filter((m) => m.id !== movie.id);
         setSavedMovies(newMoviesList);
       })
       .catch(err => console.log(err))
@@ -141,76 +157,96 @@ function App() {
   function handleUpdateUser(name, email) {
         mainApi.setUserData(name, email)
         .then((data) => {
-            setCurrentUser(data)
+            setCurrentUser(data);
+            setInfoMessage({
+                ...infoMessage,
+                isShown: true,
+                type: 'profile',
+            })
         })
-        .catch(err => {
-            console.log(err);
-        })
+        .catch(({ message, statusCode }) => {
+            setInfoMessage({
+              ...infoMessage,
+              isShown: true,
+              message,
+              code: statusCode,
+              type: 'profile',
+            });
+          })
   }
+
+  function handleClickResetInfoMessage() {
+    if (infoMessage.isShown){
+      setInfoMessage({
+        ...infoMessage,
+        isShown: false,
+        message: '',
+        type: '',
+        code: SUCCESSFUL_CODE,
+      });
+    }
+  };
     
     return(
         <CurrentUserContext.Provider value={currentUser}>
-            <div className="page">
+            <div className="page" onClick={infoMessage.isShown ? handleClickResetInfoMessage : null}>
                 
-                    <Header isLoggedIn={isLoggedIn}/>
+                <Header loggedIn={loggedIn}/>
+
                     <Switch>
+
+                    <ProtectedRoute exact path="/movies"
+                    component={Movies}
+                    loggedIn={loggedIn}
+                    savedMoviesList={savedMovies}
+                    onLikeClick={handleSaveMovie}
+                    onDeleteClick={handleDeleteMovie}
+                    />
+
+                    <ProtectedRoute exact path="/saved-movies"
+                    component={SavedMovies}
+                    loggedIn={loggedIn}
+                    list={savedMovies}
+                    onDeleteClick={handleDeleteMovie}
+                    isError={isError}
+                    />
+
+                    <ProtectedRoute exact path ="/profile"
+                    component={Profile}
+                    onSignOut={signOut}
+                    onUpdate={handleUpdateUser}
+                    loggedIn={loggedIn}
+                    infoMessage={infoMessage}
+                    />
+                    
+                    <Route exact path="/">
+                        <Main />
+                    </Route>
+
                     <Route path='/signup'>
                         <Register onRegister={signUp} onLoginState={handleLoginState}/>
                      </Route>
+
                     <Route path='/signin'>
                         <Login onLogin={signIn} onLoginState={handleLoginState} />
                     </Route>
 
-                    {/* <Route>
-                        {isLoggedIn ? (
-                            <Redirect  to="/movies"/>
-                        ) : (
-                            <Redirect to="/signin"/>
-                        )}
-                    </Route> */}
-
-                    <Route path='/' exact>
-                        {/* <Header /> */}
-                        <Main />
-                    </Route>
-
-                    <Route 
-                    path='/movies'
-
-                    // component={Movies}
-                    >
-                    <Movies
-                        isLoggedIn={isLoggedIn}
-                        savedMoviesList={savedMovies}
-                        onLikeClick={handleSaveMovie}
-                        onDeleteClick={handleDeleteMovie}/>
-                    </Route>
-
-                    <Route path='/saved-movies'
-                    // component={SavedMovies}
-                    > <SavedMovies  
-                    isLoggedIn={isLoggedIn}
-                    list={savedMovies}
-                    onDeleteClick={handleDeleteMovie}
-                    />
-                    </Route>
-
-                    <Route path="/profile"
-                    >
-                    <Profile
-                    onSignOut={signOut}
-                    onUpdate={handleUpdateUser}
-                    // component={Profile}
-                    />
-                    </Route>
-
-
                     <Route path="*">
                         <PageNotFound />
                     </Route>
+
+                    <Route>
+                        {loggedIn ? (
+                            <Redirect  to="/movies"/>
+                        ) : (
+                            <Redirect to="/"/>
+                        )}
+                    </Route>
+
                     </Switch>
-                
+
                 <Footer />
+
             </div>
         </CurrentUserContext.Provider>
     );
