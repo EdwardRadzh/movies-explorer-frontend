@@ -139,7 +139,7 @@ export class MainApi {
 
   //метод удаления карточки пользователя с сервера
   deleteMovie(movieId) {
-    return fetch(`${this._url}/movies/${movieId}`, {
+    return fetch(`${this._url}/movies/${movieId}?movieId=${movieId}`, {
       method: 'DELETE',
       headers: this._getHeaders(),
     })

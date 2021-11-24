@@ -48,6 +48,7 @@ function App() {
               if(res) {
                 setLoggedIn(true);
                 setUserData(res.email, res.name);
+                history.push('/movies')
               }
             })
             .catch((err) => {
