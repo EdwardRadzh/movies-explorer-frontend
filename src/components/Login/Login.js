@@ -3,8 +3,9 @@ import React from 'react';
 import Logo from "../Logo/Logo";
 import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../hooks/UseFormValidation';
+import InfoMessage from '../InfoMessage/InfoMessage';
 
-function Login({ onLogin }) {
+function Login({ onLogin, infoMessage }) {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     // const { onLogin, onLoginState } = props;
@@ -60,6 +61,8 @@ function Login({ onLogin }) {
                         {errors.password || ''}
                     </span>
                 </label>
+
+                <InfoMessage {...infoMessage} />
 
                 <button className="auth__btn" disabled={!isValid}>Войти</button>
             </form>

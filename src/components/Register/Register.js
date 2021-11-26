@@ -3,12 +3,13 @@ import React from 'react';
 import Logo from "../Logo/Logo";
 import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../hooks/UseFormValidation';
+import InfoMessage  from '../InfoMessage/InfoMessage';
 
 function Register(props) {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [name, setName] = React.useState('');
-    const { onRegister, onLoginState } = props;
+    const { onRegister, infoMessage } = props;
 
     const {values, errors, isValid, handleChange} = useFormWithValidation();
 
@@ -77,6 +78,9 @@ function Register(props) {
                     </span>
                     
                 </label>
+
+                <InfoMessage {...infoMessage} />
+
                 <button className="auth__btn" type="submit" disabled={!isValid}>Зарегистрироваться</button>
             </form>
             <p className="auth__subtitle">Уже зарегистрированы?

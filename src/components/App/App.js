@@ -41,32 +41,40 @@ function App() {
     // };
 
     React.useEffect(() => {
-          const jwt = localStorage.getItem('jwt');
+        if (localStorage.getItem('jwt')) {
+            const jwt = localStorage.getItem('jwt');
     
           mainApi.checkToken(jwt)
             .then((res) => {
               if(res) {
-                setLoggedIn(true);
-                setUserData(res.email, res.name);
-                history.push('/movies')
+                handleLoggedIn();
+                setCurrentUser(res)
+                // setUserData(res.email, res.name);
+                // history.push('/movies')
               }
             })
             .catch((err) => {
               console.log(`Произошла ошибка: ${err}`);
-            });
-        
+            }); 
+        }
       }, [history, loggedIn]);
 
-    React.useEffect(() => {
-        mainApi.getUserData()
-        .then((data) => {
-            handleLoggedIn();
-            setCurrentUser(data)
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    }, [loggedIn]);
+      React.useEffect(() => {
+        if (loggedIn) {
+          history.push('/movies');
+        }
+      }, [history, loggedIn]);
+
+    // React.useEffect(() => {
+    //     mainApi.getUserData()
+    //     .then((data) => {
+    //         // handleLoggedIn();
+    //         setCurrentUser(data)
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //     })
+    // }, [loggedIn]);
 
     React.useEffect(() => {
         if(loggedIn) {
@@ -85,7 +93,6 @@ function App() {
     function signUp(name, email, password) {
         return mainApi.register(name, email, password)
             .then((res) => {
-                console.log(res);
                 if(res) {
                     signIn(res.email, password)
                     setUserData(res.name, res.email)
