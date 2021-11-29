@@ -60,6 +60,15 @@
 .movies-list__message_type_err{
   color: #FF004C;
 }
+
+.movies-card-list__span {
+  margin: 80px auto 0;
+  text-align: center;
+}
+
+.movies-card-list__span-hidden {
+  display: none;
+}
   
  @media screen and (max-width: 1023px) {
   .movies-list__box {
