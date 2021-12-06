@@ -1,48 +1,63 @@
 import './SavedMovies.css';
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import { filterMovies } from '../../utils/utils';
 import React from 'react';
+import mainApi from '../../utils/MainApi';
+import Preloader from '../Preloader/Preloader';
 
-function SavedMovies({ list, onDeleteClick, isError }) {
+function SavedMovies({ setSavedMovies, savedMovies, handleToggleCheckbox, searchMovie,
+    inputError, preloader, searchError, onMovieDelete, setSearchError }) {
 
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [shortFilms, setShortFilms] = React.useState('off');
+    React.useEffect(() => {
+        mainApi.getSavedMovies(localStorage.getItem('jwt'))
+            .then((res) => {
+                setSavedMovies(res);
+            })
+    }, []);
+
+    React.useEffect(() => {
+        setSearchError(false);
+    }, []);
+//   const [searchQuery, setSearchQuery] = React.useState('');
+//   const [shortFilms, setShortFilms] = React.useState('off');
   
-  const [filteredMovies, setFilteredMovies] = React.useState(list);
+//   const [filteredMovies, setFilteredMovies] = React.useState(list);
   
-  const [isNothingFound, setIsNothingFound] = React.useState(false);
+//   const [isNothingFound, setIsNothingFound] = React.useState(false);
 
-  function handleSearchSubmit(value) {
-      setSearchQuery(value);
-      const resultList = filterMovies(list, searchQuery, shortFilms)
-      setFilteredMovies(resultList)
-  }
+//   function handleSearchSubmit(value) {
+//       setSearchQuery(value);
+//       const resultList = filterMovies(list, searchQuery, shortFilms)
+//       setFilteredMovies(resultList)
+//   }
 
-  function handleFilterCheckBox(e) {
-    setShortFilms(e.target.value);
-  };
+//   function handleFilterCheckBox(e) {
+//     setShortFilms(e.target.value);
+//   };
 
-  React.useEffect(() => {
-        const arr = filterMovies(list, searchQuery, shortFilms)
-        setFilteredMovies(arr)
-        if (searchQuery) {
-            arr.length === 0 ? setIsNothingFound(true) : setFilteredMovies(false);
-        }
-  }, [list, searchQuery, shortFilms])
+//   React.useEffect(() => {
+//         const arr = filterMovies(list, searchQuery, shortFilms)
+//         setFilteredMovies(arr)
+//         if (searchQuery) {
+//             arr.length === 0 ? setIsNothingFound(true) : setFilteredMovies(false);
+//         }
+//   }, [list, searchQuery, shortFilms])
     return (
         <section className="saved-movies">
             <SearchForm 
-            onSearchClick={handleSearchSubmit}
-            onCheckBox={handleFilterCheckBox}
-            shortFilms={shortFilms}
-            savedMoviesPage={true}/>
+            searchMovie={searchMovie}
+            inputError={inputError}
+            handleToggleCheckbox={handleToggleCheckbox}
+            />
+            {preloader && <Preloader/>}
+            <h2 className={searchError ? 'movies__search-error' : 'movies__search-error movies__search-error-hidden'}>
+                    Ничего не найдено!
+            </h2>
             <MoviesCardList
-            savedMoviesPage={true}
-            list={filteredMovies}
-            onDelete={onDeleteClick}
-            isError={isError}
-            isEmptyList={isNothingFound}/>
+            setMovies={setSavedMovies} 
+            movies={savedMovies} 
+            onMovieDelete={onMovieDelete}
+            />
         </section>
     );
 };
