@@ -22,11 +22,10 @@ import * as moviesApi from '../../utils/MoviesApi';
 function App() {
 
     const history = useHistory();
-    const location = useLocation();
 
     const [isLoading, setIsLoading] = React.useState(false);
     // const [currentUser, setCurrentUser] = React.useState({});
-    const [loggedIn, setLoggedIn] = React.useState(true);
+    const [loggedIn, setLoggedIn] = React.useState(false);
     const [apiMovies, setApiMovies] = React.useState([]);
     const [isShortMovies, setIsShortMovies] = React.useState(false);
     const [savedMovies, setSavedMovies] = React.useState([]);
@@ -55,38 +54,6 @@ function App() {
         setLoggedIn(true)
     };
 
-    // function handleLoginState(state) {
-    //     setLoginState(state);
-    // };
-
-    // const tokenCheck = React.useCallback(() => {
-    //   const token = localStorage.getItem("jwt");
-    //   if (token) {
-    //     setTokenChecked(false);
-    //     setLoggedIn(true);
-    //     mainApi
-    //       .getContent(token)
-    //       .then((res) => {
-    //         if (res) {
-    //           setCurrentUser({ ...res });
-    //           setTimeout(() => {
-    //             setTokenChecked(true);
-    //           }, 100);
-    //         }
-    //       })
-    //       .catch((err) => {
-    //         localStorage.removeItem("jwt");
-    //       });
-    //   } else {
-    //     setTokenChecked(true);
-    //     setLoggedIn(false);
-    //   }
-    // }, []);
-
-    // React.useEffect(() => {
-    //   tokenCheck();
-    // }, [tokenCheck]);
-
     React.useEffect(() => {
       const jwt = localStorage.getItem("jwt")
 
@@ -101,50 +68,13 @@ function App() {
       }
     }, [loggedIn])
 
-
-    //   React.useEffect(() => {
-    //     if (loggedIn) {
-    //       history.push('/movies');
-    //     }
-    //   }, [history, loggedIn]);
-
-    // React.useEffect(() => {
-    //     mainApi.getUserData()
-    //     .then((data) => {
-    //         // handleLoggedIn();
-    //         setCurrentUser(data)
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     })
-    // }, [loggedIn]);
-
-    // React.useEffect(() => {
-    //     const savedMovies = localStorage.getItem('savedMovies');
-    //     if(loggedIn) {
-    //         mainApi.getUsersMovies()
-    //         .then((data) => {
-    //             setSavedMovies(data)
-    //             localStorage.setItem('savedMovies', JSON.stringify(data));
-    //             setIsError(false)
-    //         })
-    //         .catch((err) => {
-    //             setIsError(true)
-    //             console.log(err);
-    //         })
-    //     }
-    // }, [loggedIn])
-
-
-
-    
     // регистрация
     function signUp(name, email, password) {
         return mainApi.register(name, email, password)
             .then((res) => {
                 if(res.ok) {
                     // setCurrentUser({ ...res })
-                    signIn(email, password)
+                    signIn(res.email, password)
                 }    
                     // handleLoggedIn()
                     // setUserData(res.name, res.email)
@@ -261,9 +191,9 @@ function App() {
   }
 
   React.useEffect(() => {
-    if (localStorage.getItem('saved')) {
+    // if (localStorage.getItem('saved')) {
       setSavedMovies(JSON.parse(localStorage.getItem('saved')))
-    }
+    
   }, [history]);
 
   React.useEffect(() => {
@@ -438,11 +368,13 @@ function App() {
                 </Route>
 
                 <Route path='/signup'>
-                  {loggedIn ? <Redirect to='/movies'/> : <Register onRegister={signUp} infoMessage={infoMessage} />}
+                  {loggedIn ? (<Redirect to='/movies'/>) : (<Register onRegister={signUp} infoMessage={infoMessage} />)}
                  </Route>
 
-                <Route path='/signin'>
-                    <Login onLogin={signIn} infoMessage={infoMessage} />
+                <Route path='/signin'>{
+                  loggedIn ? (<Redirect to ='/movies'/>) : (<Login onLogin={signIn} infoMessage={infoMessage} />)
+                }
+                    
                 </Route>
 
                 <Route path="*">

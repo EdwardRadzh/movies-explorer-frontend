@@ -15,26 +15,10 @@ function SearchForm({searchMovie, inputError, handleToggleCheckbox}) {
         searchMovie(inputValue);
         setInputValue('');
     }
-    
-    // function handleSubmit(e) {
-    //     e.preventDefault();
-    //     onSearchClick(values.query);
-    // }
-
-    // React.useEffect(() => {
-    //     if (!savedMoviesPage) {
-    //         const input = localStorage.getItem('searchQuery');
-    //         if(input) {
-    //             setIsValid(true)
-    //             setValues({ query: input })
-    //         }
-    //     }
-    // }, [savedMoviesPage, setIsValid, setValues])
-
 
     return (
         <div className="search-form">
-            <form className="search-form__form">
+            <form className="search-form__form" onSubmit={handleSubmit}>
                 <SearchInput 
                 onChange={handleChangeInput}
                 inputError={inputError}
@@ -46,7 +30,7 @@ function SearchForm({searchMovie, inputError, handleToggleCheckbox}) {
                 <button 
                 className="search-form__btn" 
                 type="submit"
-                onClick={handleSubmit}
+                // onClick={handleSubmit}
                 ></button>
                 <Checkbox
                 handleToggleCheckBox={handleToggleCheckbox}
