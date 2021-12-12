@@ -43,7 +43,7 @@
   display: none;
 }
 
-.movies-list__message{
+.movies-list__message {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -55,6 +55,10 @@
   max-width: 380px;
   text-align: center;
   color: #000;
+}
+
+.movies-list__message-hidden {
+  display: none;
 }
 
 .movies-list__message_type_err{

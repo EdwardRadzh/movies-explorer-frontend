@@ -6,19 +6,6 @@
   flex-direction: column;
   flex-grow: 1;
 }
-
-.movies__search-error {
-  display: block;
-  margin: 0;
-  padding-top: 10%;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 29px;
-}
-
-.movies__search-error-hidden {
-  display: none;
-}
   
 @media screen and (max-width: 1023px) {
   .saved-movies{

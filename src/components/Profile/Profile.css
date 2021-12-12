@@ -62,8 +62,23 @@
   margin-left: -30px;
   box-sizing: border-box;
 }
-  
-  
+
+.profile__submit-error {
+  color: #ee3465;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+}
+
+.profile__submit-sucsess {
+  color: #1daa51;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+}
+
 .profile__btn {
   border: none;
   background-color: transparent;
