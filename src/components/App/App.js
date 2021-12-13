@@ -117,7 +117,7 @@ function App() {
   function handleSignOut() {
     localStorage.removeItem("jwt");
     localStorage.removeItem("movies");
-    localStorage.removeItem("query");
+    localStorage.removeItem("keyWord");
     localStorage.removeItem("checkbox")
     setLoggedIn(false);
     setAllMovies([]);
