@@ -37,17 +37,9 @@ function App() {
   const [isMoviesNotFound, setMoviesNotFound] = React.useState(false);
   const [isSavedMoviesNotFound, setIsSavedMoviesNotFound] = React.useState(false);
   const [isErrorServer, setErrorServer] = React.useState(false);
-
-  // все фильмы 
   const [allMovies, setAllMovies] = React.useState([]);
-
-  // отфильтрованные фильмы после поиска
   const [movies, setMovies] = React.useState([]);
-
-  // все сохраненные фильмы
   const [allSavedMovies, setAllSavedMovies] = React.useState([]);
-
-  // отфильтрованные сохраненные фильмы
   const [savedMovies, setSavedMovies] = React.useState([]);
 
   React.useEffect(() => {
@@ -62,6 +54,7 @@ function App() {
     }
   }, [history, token]);
 
+  // данные пользователя
   React.useEffect(() => {
     if (loggedIn) {
       Promise.all([mainApi.getUserData(), mainApi.getSavedMovies()])
@@ -72,9 +65,8 @@ function App() {
           setCurrentUser(userData);
           setAllSavedMovies(userMovies);
           setSavedMovies(userMovies);
-          console.log(userData);
 
-          if ('movies' in localStorage)
+          if ("movies" in localStorage)
             setMovies(JSON.parse(localStorage.getItem("movies")));
         })
         .catch((err) => {
@@ -125,6 +117,8 @@ function App() {
   function handleSignOut() {
     localStorage.removeItem("jwt");
     localStorage.removeItem("movies");
+    localStorage.removeItem("query");
+    localStorage.removeItem("checkbox")
     setLoggedIn(false);
     setAllMovies([]);
     setMovies([]);
@@ -177,6 +171,7 @@ function App() {
     });
   };
 
+  // поиск по фильмам
   function handleSearchMovies(query) {
     setLoading(true);
     setMoviesNotFound(false);
@@ -199,6 +194,9 @@ function App() {
         })
         .then((res) => {
           localStorage.setItem("movies", JSON.stringify(res));
+          setMovies(JSON.parse(localStorage.getItem("movies")));
+          localStorage.setItem('query', JSON.stringify(query));
+          localStorage.setItem('checkbox', JSON.stringify(isCheckboxOn))
           setMovies(res);
         })
         .catch((err) => {
@@ -212,12 +210,13 @@ function App() {
     }
   };
 
-  const handleSaveSearchMovies = (keySavedWord) => {
+  // поиск по сохранённым фильмам
+  function handleSaveSearchMovies(query) {
     setLoading(true);
     setIsSavedMoviesNotFound(false);
     const newSavedMovies = handleFilteredMovies(
       allSavedMovies,
-      keySavedWord,
+      query,
       isSavedCheckboxOn
     );
     setSavedMovies(newSavedMovies);
@@ -225,19 +224,20 @@ function App() {
     setLoading(false);
   };
 
+  // добавить в сохранённые
   function handleSaveMovie(movieToSave) {
     movieToSave = {
-      country: movieToSave.country || "Страна не указана",
-      director: movieToSave.director || "Режиссер не указан",
+      country: movieToSave.country || "",
+      director: movieToSave.director || "",
       duration: movieToSave.duration || 0,
-      year: movieToSave.year || "Год не указан",
-      description: movieToSave.description || "Описание отсутствует",
+      year: movieToSave.year || "",
+      description: movieToSave.description || "",
       image: `https://api.nomoreparties.co${movieToSave.image.url}`,
       trailer: movieToSave.trailerLink || "https://youtube.ru",
       thumbnail: `https://api.nomoreparties.co${movieToSave.image.url}`,
       movieId: movieToSave.id,
-      nameRU: movieToSave.nameRU || "Нет названия",
-      nameEN: movieToSave.nameEN || "Title not found",
+      nameRU: movieToSave.nameRU || "",
+      nameEN: movieToSave.nameEN || "",
     };
     return mainApi
       .saveMovie(movieToSave)
@@ -251,6 +251,7 @@ function App() {
       });
   };
 
+  // удалить фильм
   function handleDeleteMovie(movieForDelete, isSavedPage) {
     const movieForDeleteId = isSavedPage
       ? movieForDelete._id

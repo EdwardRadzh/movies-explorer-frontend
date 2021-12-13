@@ -5,12 +5,12 @@ import {
     LARGE_WINDOW_WIDTH,
     MEDIUM_WINDOW_WIDTH,
     MOBILE_WINDOW_WIDTH,
-    QUANTITY_FOR_LARGE,
-    QUANTITY_FOR_MEDIUM,
-    QUANTITY_FOR_MOBILE,
-    MORE_QUANTITY_FOR_LARGE,
-    MORE_QUANTITY_FOR_MEDIUM,
-    MORE_QUANTITY_FOR_MOBILE,
+    NUMBER_FOR_LARGE,
+    NUMBER_FOR_MEDIUM,
+    NUMBER_FOR_MOBILE,
+    MORE_NUMBER_FOR_LARGE,
+    MORE_NUMBER_FOR_MEDIUM,
+    MORE_NUMBER_FOR_MOBILE,
 } from "../../utils/constants";
 
 function MoviesCardList({
@@ -24,11 +24,11 @@ function MoviesCardList({
 
     function cardsNumber(windowWidth) {
         if (windowWidth >= LARGE_WINDOW_WIDTH)
-          return { quantity: QUANTITY_FOR_LARGE, more: MORE_QUANTITY_FOR_LARGE };
+          return { quantity: NUMBER_FOR_LARGE, more: MORE_NUMBER_FOR_LARGE };
         if (windowWidth >= MEDIUM_WINDOW_WIDTH)
-          return { quantity: QUANTITY_FOR_MEDIUM, more: MORE_QUANTITY_FOR_MEDIUM };
+          return { quantity: NUMBER_FOR_MEDIUM, more: MORE_NUMBER_FOR_MEDIUM };
         if (windowWidth >= MOBILE_WINDOW_WIDTH)
-          return { quantity: QUANTITY_FOR_MOBILE, more: MORE_QUANTITY_FOR_MOBILE };
+          return { quantity: NUMBER_FOR_MOBILE, more: MORE_NUMBER_FOR_MOBILE };
     };
 
     const [moviesCount, setMoviesCount] = React.useState(

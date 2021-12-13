@@ -39,7 +39,6 @@ function Form({
                 name="name"
                 minLength="2"
                 maxLength="30"
-                pattern="[а-яА-Яa-zA-ZёË\- ]{2,30}"
                 autoFocus
                 autoComplete="off"
                 placeholder="Имя"
@@ -64,7 +63,7 @@ function Form({
                 name="name"
                 minLength="2"
                 maxLength="30"
-                pattern="[а-яА-Яa-zA-ZёË\- ]{2,30}"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                 autoComplete="off"
                 placeholder="Имя"
                 value={values.name || ""}

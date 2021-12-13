@@ -1,6 +1,6 @@
 import './Navigation.css';
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import BurgerNav from '../BurgerNav/BurgerNav';
 
 function Navigation({ isLoggedIn }) {
@@ -10,7 +10,7 @@ function Navigation({ isLoggedIn }) {
 
     return (
         <nav className={`menu ${location.pathname === "/" ? "" : 'menu__account menu__main-burger'}`}>
-            {location.pathname === "/" ? 
+            {location.pathname === "/" && !isLoggedIn ? 
             (
                 <>
                     <Link to='/signup' className='menu__link page__link'>Регистрация</Link>

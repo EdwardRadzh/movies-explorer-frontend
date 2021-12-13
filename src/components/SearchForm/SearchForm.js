@@ -10,7 +10,7 @@ function SearchForm({ handleSearchSubmit, toggleCheckbox, checkboxOn }) {
     function handleSubmit(e) {
         e.preventDefault();
         if (!inputValue) {
-            setSearchFormError("Нужно ввести ключевое слово");
+            setSearchFormError("Введите название фильма");
         } else {
             handleSearchSubmit(inputValue);
         }
@@ -24,7 +24,7 @@ function SearchForm({ handleSearchSubmit, toggleCheckbox, checkboxOn }) {
     return (
         <>
         <div className="search-form">
-            <form className="search-form__form" onSubmit={handleSubmit }>
+            <form className="search-form__form" onSubmit={handleSubmit}>
                 <input 
                 className="search-form__input" 
                 type="text" 

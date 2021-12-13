@@ -29,7 +29,7 @@ function Login({ onLogin, setError, setIsDataSent, isError, isDataSent }) {
             isError={isError}
             isValid={isValid}
             isDataSent={isDataSent}
-            submitErrorText={"При авторизации произошла ошибка"}
+            submitErrorText={"Ошибка авторизации"}
             btnText={"Войти"}
             btnCaptionText={"Ещё не зарегистрированы?"}
             btnLinkPath={"/signup"}

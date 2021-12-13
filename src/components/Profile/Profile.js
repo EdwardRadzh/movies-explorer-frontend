@@ -62,7 +62,6 @@ function Profile({
                         required
                         value={values.name || ''}
                         onChange={handleChange}
-                        pattern='^[A-Za-zА-Яа-яЁё /s -]+$'
                         />
                     </label>
                     <label className="profile__label">E-mail
@@ -75,11 +74,13 @@ function Profile({
                         id="email" 
                         required
                         value={values.email || ''}
-                        onChange={handleChange}/>
+                        onChange={handleChange}
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                        />
                     </label>
                     {isComplitedUpdate ? (
                         <span className="profile__submit-sucsess">
-                            Обновление профиля прошло успешно!
+                            Успешно!
                         </span>
                     ) : null}
                     {isError ? (

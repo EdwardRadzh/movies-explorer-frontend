@@ -5,8 +5,8 @@ function useValidForm() {
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
 
-  const handleChange = (event) => {
-    const target = event.target;
+  function handleChange(e) {
+    const target = e.target;
     const name = target.name;
     const value = target.value;
     setValues({ ...values, [name]: value });
