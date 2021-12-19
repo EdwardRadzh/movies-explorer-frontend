@@ -5,11 +5,12 @@ import { getTimeFromMin } from '../../utils/utils';
 function MoviesCard({
     movie,
     savedMovies,
+    allSavedMovies,
     pageSavedMovies,
     handleSaveMovie,
     handleDeleteMovie,}) {
 
-    const isSaved = savedMovies.some((i) => i.movieId === movie.id);
+    const isSaved = allSavedMovies.some((i) => i.movieId === movie.id);
 
     function onLike() {
         isSaved ? handleDeleteMovie(movie, pageSavedMovies) : handleSaveMovie(movie);

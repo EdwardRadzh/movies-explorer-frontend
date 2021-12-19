@@ -11,6 +11,7 @@ function Movies({
   handleSaveMovie,
   handleDeleteMovie,
   savedMovies,
+  allSavedMovies,
   isMoviesNotFound,
   isErrorServer,
   handleSearchSubmit,
@@ -35,6 +36,7 @@ function Movies({
                 savedMovies={savedMovies}
                 isMoviesNotFound={isMoviesNotFound}
                 isErrorServer={isErrorServer}
+                allSavedMovies={allSavedMovies}
                 />
             )}
         </section>

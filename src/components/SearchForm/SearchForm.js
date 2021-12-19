@@ -13,6 +13,7 @@ function SearchForm({ handleSearchSubmit, toggleCheckbox, checkboxOn }) {
             setSearchFormError("Введите название фильма");
         } else {
             handleSearchSubmit(inputValue);
+            localStorage.setItem('query', JSON.stringify(inputValue))
         }
     }
 

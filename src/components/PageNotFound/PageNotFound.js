@@ -14,7 +14,7 @@ function PageNotFound() {
           <h2 className='notfound__title'>404</h2>
           <p className='notfound__subtitle'>Страница не найдена</p>
         </div>
-        <a href='#' onClick={handleClick} className='notfound__link page__link'>Назад</a>
+        <Link path='/' onClick={handleClick} className='notfound__link page__link'>Назад</Link>
     </section>
   );
 };

@@ -7,6 +7,7 @@ import Preloader from '../Preloader/Preloader';
 function SavedMovies({ 
   movies,
   handleSearchSubmit,
+  allSavedMovies,
   toggleCheckbox,
   checkboxOn,
   handleDeleteMovie,
@@ -30,6 +31,7 @@ function SavedMovies({
                 handleDeleteMovie={handleDeleteMovie}
                 savedMovies={savedMovies}
                 isMoviesNotFound={isMoviesNotFound}
+                allSavedMovies={allSavedMovies}
                 />
             )}
         </section>

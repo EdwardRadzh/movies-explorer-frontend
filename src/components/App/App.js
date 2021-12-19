@@ -37,9 +37,13 @@ function App() {
   const [isMoviesNotFound, setMoviesNotFound] = React.useState(false);
   const [isSavedMoviesNotFound, setIsSavedMoviesNotFound] = React.useState(false);
   const [isErrorServer, setErrorServer] = React.useState(false);
+  // все фильмы с внешнего сервера
   const [allMovies, setAllMovies] = React.useState([]);
+  // отфильтрованные фильмы
   const [movies, setMovies] = React.useState([]);
+  // сохраненные фильмы
   const [allSavedMovies, setAllSavedMovies] = React.useState([]);
+  // отфильтрованные сохраненные фильмы
   const [savedMovies, setSavedMovies] = React.useState([]);
 
   React.useEffect(() => {
@@ -65,7 +69,6 @@ function App() {
           setCurrentUser(userData);
           setAllSavedMovies(userMovies);
           setSavedMovies(userMovies);
-
           if ("movies" in localStorage)
             setMovies(JSON.parse(localStorage.getItem("movies")));
         })
@@ -74,6 +77,10 @@ function App() {
         });
     }
   }, [loggedIn]);
+
+  React.useEffect(() => {
+    localStorage.setItem('saved', JSON.stringify(allSavedMovies))
+  }, [allSavedMovies])
 
   React.useEffect(() => {
     setComplitedUpdate(false);
@@ -197,10 +204,10 @@ function App() {
           setMovies(JSON.parse(localStorage.getItem("movies")));
           localStorage.setItem('query', JSON.stringify(query));
           localStorage.setItem('checkbox', JSON.stringify(isCheckboxOn))
-          setMovies(res);
         })
         .catch((err) => {
           setMovies([]);
+          setMoviesNotFound(true)
           setErrorServer(true);
           console.log(err);
         })
@@ -211,12 +218,12 @@ function App() {
   };
 
   // поиск по сохранённым фильмам
-  function handleSaveSearchMovies(query) {
+  function handleSaveSearchMovies(saveQuery) {
     setLoading(true);
     setIsSavedMoviesNotFound(false);
     const newSavedMovies = handleFilteredMovies(
       allSavedMovies,
-      query,
+      saveQuery,
       isSavedCheckboxOn
     );
     setSavedMovies(newSavedMovies);
@@ -245,6 +252,7 @@ function App() {
         const newSavedMovies = [...allSavedMovies, savedMovieItem];
         setAllSavedMovies(newSavedMovies);
         setSavedMovies(newSavedMovies);
+        
       })
       .catch((err) => {
         console.log(err);
@@ -289,6 +297,7 @@ function App() {
                 isMoviesNotFound={isMoviesNotFound}
                 isErrorServer={isErrorServer}
                 isLoading={isLoading}
+                allSavedMovies={allSavedMovies}
                 />
 
                 <ProtectedRoute exact path="/saved-movies"
@@ -302,6 +311,7 @@ function App() {
                 savedMovies={savedMovies}
                 isMoviesNotFound={isSavedMoviesNotFound}
                 isLoading={isLoading}
+                allSavedMovies={allSavedMovies}
                 />
 
                 <ProtectedRoute exact path ="/profile"

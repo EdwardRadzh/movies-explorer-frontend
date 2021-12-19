@@ -19,6 +19,7 @@ function MoviesCardList({
     handleSaveMovie,
     handleDeleteMovie,
     savedMovies,
+    allSavedMovies,
     isMoviesNotFound,
     isErrorServer,}) {
 
@@ -70,12 +71,13 @@ function MoviesCardList({
               <div className='movies-list__box'>
               {movies.slice(0, moviesCount).map((movie, i) => (
                     <MoviesCard
-                        key={i}
-                        movie={movie}
-                        savedMovies={savedMovies}
-                        pageSavedMovies={pageSavedMovies}
-                        handleSaveMovie={handleSaveMovie}
-                        handleDeleteMovie={handleDeleteMovie}
+                      key={i}
+                      movie={movie}
+                      savedMovies={savedMovies}
+                      pageSavedMovies={pageSavedMovies}
+                      handleSaveMovie={handleSaveMovie}
+                      handleDeleteMovie={handleDeleteMovie}
+                      allSavedMovies={allSavedMovies}
                     />
               ))}
 
