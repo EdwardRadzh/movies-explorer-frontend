@@ -1,41 +1,42 @@
-import './Login.css';
-import Logo from "../Logo/Logo";
-import { Link } from 'react-router-dom';
+import React from 'react';
+import useValidForm  from '../../hooks/UseFormValidation';
+import { useHistory } from "react-router-dom";
+import Form from '../Form/Form';
 
-function Login() {
+function Login({ onLogin, setError, setIsDataSent, isError, isDataSent }) {
+    const history = useHistory();
+    const { values, handleChange, errors, isValid } = useValidForm();
+    
+    React.useEffect(() => {
+        setError(false);
+      }, [history, setError]);
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        setIsDataSent(true);
+        onLogin(values.email, values.password);
+    }
+
     return (
-        <section className="auth">
-            <Logo />
-            <h2 className="auth__title">Рады видеть!</h2>
-            <form className="auth__form">
-                <label className='auth__label'>E-mail
-                    <input
-                        id='email'
-                        type='email'
-                        className='auth__input'
-                        name='email'
-                        minLength='2'
-                        maxLength='30'
-                        required
-                    />
-                </label>
-                <label className='auth__label'>Пароль
-                    <input
-                        id='password'
-                        type='password'
-                        className='auth__input'
-                        name='password'
-                        minLength='4'
-                        maxLength='20'
-                        required
-                    />
-                </label>
-                <button className="auth__btn">Войти</button>
-            </form>
-            <p className="auth__subtitle">Ещё не зарегистрированы?
-                <Link to="/signup" className="auth__link page__link">Регистрация</Link>
-            </p>
-        </section>
+        <>
+            <Form
+            title={"Рады видеть!"}
+            handleSubmit={handleSubmit}
+            isRegisterPage={false}
+            values={values}
+            handleChange={handleChange}
+            errors={errors}
+            isError={isError}
+            isValid={isValid}
+            isDataSent={isDataSent}
+            submitErrorText={"Ошибка авторизации"}
+            btnText={"Войти"}
+            btnCaptionText={"Ещё не зарегистрированы?"}
+            btnLinkPath={"/signup"}
+            btnCaptionLinkText={"Регистрация"}
+            addRequired={false}
+            />   
+        </>
     );
 };
 

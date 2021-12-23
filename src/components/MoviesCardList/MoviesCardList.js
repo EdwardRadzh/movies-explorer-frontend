@@ -1,45 +1,98 @@
-import './MoviesCardList.css'
+import './MoviesCardList.css';
 import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
+import {
+    LARGE_WINDOW_WIDTH,
+    MEDIUM_WINDOW_WIDTH,
+    MOBILE_WINDOW_WIDTH,
+    NUMBER_FOR_LARGE,
+    NUMBER_FOR_MEDIUM,
+    NUMBER_FOR_MOBILE,
+    MORE_NUMBER_FOR_LARGE,
+    MORE_NUMBER_FOR_MEDIUM,
+    MORE_NUMBER_FOR_MOBILE,
+} from "../../utils/constants";
 
-import image1 from '../../images/pic1.png'
-import image2 from '../../images/pic2.png'
-import image3 from '../../images/pic3.png'
-import image4 from '../../images/pic4.png'
-import image5 from '../../images/pic5.png'
-import image6 from '../../images/pic6.png'
-import image7 from '../../images/pic7.png'
-import image8 from '../../images/pic8.png'
-import image9 from '../../images/pic9.png'
-import image10 from '../../images/pic10.png'
-import image11 from '../../images/pic11.png'
-import image12 from '../../images/pic12.png'
+function MoviesCardList({
+    movies,
+    pageSavedMovies,
+    handleSaveMovie,
+    handleDeleteMovie,
+    savedMovies,
+    allSavedMovies,
+    isMoviesNotFound,
+    isErrorServer,}) {
 
-function MoviesCardList() {
+    function cardsNumber(windowWidth) {
+        if (windowWidth >= LARGE_WINDOW_WIDTH)
+          return { quantity: NUMBER_FOR_LARGE, more: MORE_NUMBER_FOR_LARGE };
+        if (windowWidth >= MEDIUM_WINDOW_WIDTH)
+          return { quantity: NUMBER_FOR_MEDIUM, more: MORE_NUMBER_FOR_MEDIUM };
+        if (windowWidth >= MOBILE_WINDOW_WIDTH)
+          return { quantity: NUMBER_FOR_MOBILE, more: MORE_NUMBER_FOR_MOBILE };
+    };
+
+    const [moviesCount, setMoviesCount] = React.useState(
+        cardsNumber(window.innerWidth).quantity
+    );
+    
+    React.useEffect(() => {
+        const callbackWidth = () => {
+          setTimeout(
+            500,
+            setMoviesCount(cardsNumber(window.innerWidth).quantity)
+          );
+        };
+        window.addEventListener("resize", callbackWidth);
+        return () => {
+          window.removeEventListener("resize", callbackWidth);
+        };
+    }, []);
+
+    function handleMoreCards() {
+        setMoviesCount(Number(moviesCount) + cardsNumber(window.innerWidth).more);
+    };
+
     return (
         <section className="movies-list">
-             <div className='movies-list__box'>
-                <MoviesCard img={image1}/>
-                <MoviesCard img={image2}/>
-                <MoviesCard img={image3}/>
-                <MoviesCard img={image4}/>
-                <MoviesCard img={image5}/>
-                <MoviesCard img={image6}/>
-                <MoviesCard img={image7}/>
-                <MoviesCard img={image8}/>
-                <MoviesCard img={image9}/>
-                <MoviesCard img={image10}/>
-                <MoviesCard img={image11}/>
-                <MoviesCard img={image12}/>
-            </div>
-            
-            <button
-              className="movies-list__more-btn"
-              type="button"
-              aria-label="Показать еще"
-            >
-            Ещё
-            </button>
+            <span
+            className={`movies-list__message ${!isMoviesNotFound ? "movies-list__message-hidden" : ""}`}
+            >Ничего не найдено
+            </span>
+            <span
+            className={`movies-list__message ${!isErrorServer ? "movies-list__message-hidden" : ""}`}
+            >Во время запроса произошла ошибка. Возможно, проблема с соединением или
+            сервер недоступен. Подождите немного и попробуйте ещё раз
+            </span>  
+            <span
+            className={`movies-list__message ${pageSavedMovies && movies.length === 0 && !isMoviesNotFound ? "" : "movies-list__message-hidden"}`}
+            >Список пуст
+            </span> 
+              <div className='movies-list__box'>
+              {movies.slice(0, moviesCount).map((movie, i) => (
+                    <MoviesCard
+                      key={i}
+                      movie={movie}
+                      savedMovies={savedMovies}
+                      pageSavedMovies={pageSavedMovies}
+                      handleSaveMovie={handleSaveMovie}
+                      handleDeleteMovie={handleDeleteMovie}
+                      allSavedMovies={allSavedMovies}
+                    />
+              ))}
+
+              </div>
+              {!pageSavedMovies ? (
+                <button
+                className={`${movies.length > moviesCount ?
+                "movies-list__more-btn" :
+                "movies-list__more-btn_hidden"}`}
+                type="button"
+                onClick={handleMoreCards}
+                >Ещё
+                </button>
+              ) : null
+              }
         </section>
     );
 };

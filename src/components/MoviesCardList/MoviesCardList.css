@@ -38,11 +38,51 @@
   color: #fff;
   cursor: pointer;
 }
+
+.movies-list__more-btn_hidden {
+  display: none;
+}
+
+.movies-list__message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  max-width: 380px;
+  text-align: center;
+  color: #000;
+}
+
+.movies-list__message-hidden {
+  display: none;
+}
+
+.movies-list__message_type_err{
+  color: #FF004C;
+}
+
+.movies-card-list__span {
+  margin: 80px auto 0;
+  text-align: center;
+}
+
+.movies-card-list__span-hidden {
+  display: none;
+}
   
  @media screen and (max-width: 1023px) {
   .movies-list__box {
     grid-column-gap: 30px;
     grid-row-gap: 36px;
+  }
+  .movies-list__message{
+    font-size: 12px;
+    line-height: 16px;
+    max-width: 280px;
   }
 }
   
@@ -58,5 +98,10 @@
   }
   .movies-list__more-btn{ 
     width: 240px;
+  }
+  .movies-list__message{
+    font-size: 11px;
+    line-height: 13px;
+    max-width: 240px;
   }
 }

@@ -71,9 +71,14 @@
     background-size: 14px 12px;
     background-image: url('../../images/like_white.svg');
     transition: opacity .3s ease-in
+    
 }
   
 .movie__save-btn:hover {
+    background-image: url('../../images/like_red.svg');
+}
+
+.movie__save-btn_active {
     background-image: url('../../images/like_red.svg');
 }
 
@@ -89,21 +94,6 @@
 .movie:hover .movie__saved-btn{
     visibility: visible;
 }
-  
-/* .movie__save-btn_active{
-    background-image: url('../../images/flag-active.svg');
-    background-color: #000;
-}
-  
-.movie__save-btn_active:hover{
-    background-color: #000;
-    opacity: .1;
-} */
-  
-/* .movie__delete-btn{
-    background-size: 8px;
-    background-image: url('../../images/delete-btn.svg');
-} */
   
 .movie__link {
     display: block;

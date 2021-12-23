@@ -1,28 +1,49 @@
 import React from 'react';
-import {useHistory} from 'react-router-dom';
 import './MoviesCard.css';
+import { getTimeFromMin } from '../../utils/utils';
 
-function MoviesCard({img}) {
-    const [page, setPage] = React.useState(false);
-    const history = useHistory();
-    React.useEffect(() => {
-        if (history.location.pathname === '/saved-movies') {
-            setPage(true)
-        }
-    }, [history])
+function MoviesCard({
+    movie,
+    savedMovies,
+    allSavedMovies,
+    pageSavedMovies,
+    handleSaveMovie,
+    handleDeleteMovie,}) {
+
+    const isSaved = allSavedMovies.some((i) => i.movieId === movie.id);
+
+    function onLike() {
+        isSaved ? handleDeleteMovie(movie, pageSavedMovies) : handleSaveMovie(movie);
+    }
+
+    function onDelete() {
+        handleDeleteMovie(movie, pageSavedMovies);
+    }
 
     return (
         <article className="movie">
-            <a className="movie__link" href="#">
-                <img className="movie__pic" src={img} alt="film-name"/>
+            <a className="movie__link" href={pageSavedMovies ? movie.trailer : movie.trailerLink} target='_blank' rel='noreferrer'>
+                <img className="movie__pic" src={pageSavedMovies ? movie.image : `https://api.nomoreparties.co${movie.image.url}`} alt="film-name"/>
             </a>
             <div className="movie__header">
                 <div className="movie__info">
                     <div className="movie__text-wrap">
-                        <h2 className="movie__title">33 слова о дизайне</h2>
-                        <p className='movie__duration'>1ч 47м</p>
+                        <h2 className="movie__title">{movie.nameRU}</h2>
+                        <p className='movie__duration'>{getTimeFromMin(movie.duration)}</p>
                     </div>
-                    <button className={page ? 'movie__btn movie__saved-btn' : 'movie__btn movie__save-btn'} type="button" aria-label="Добавить в избранное"/>
+                    {pageSavedMovies ? (
+                        <button
+                        className="movie__btn movie__saved-btn"
+                        type="button"
+                        onClick={onDelete}
+                        />
+                    ) : (
+                        <button
+                        className={`movie__btn movie__save-btn ${isSaved ? "movie__save-btn_active" : ""}`}
+                        type="button"
+                        onClick={onLike}
+                        />
+                    )}
                 </div>
             </div>
         </article>

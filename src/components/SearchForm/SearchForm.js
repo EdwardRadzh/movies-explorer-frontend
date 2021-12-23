@@ -1,22 +1,52 @@
 import './SearchForm.css';
 import React from 'react';
+import Checkbox from '../Checkbox/Checkbox';
 
-function SearchForm() {
+function SearchForm({ handleSearchSubmit, toggleCheckbox, checkboxOn }) {
+
+    const [inputValue, setInputValue] = React.useState("");
+    const [searchFormError, setSearchFormError] = React.useState("");
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (!inputValue) {
+            setSearchFormError("Введите название фильма");
+        } else {
+            handleSearchSubmit(inputValue);
+            localStorage.setItem('query', JSON.stringify(inputValue))
+        }
+    }
+
+    function handleChange(e) {
+        setSearchFormError("");
+        setInputValue(e.target.value);
+    }
+
     return (
+        <>
         <div className="search-form">
-            <form className="search-form__form">
-                <input className="search-form__input" type="text" placeholder="Фильм" required/>
-                <button className="search-form__btn" type="submit"></button>
-                <div className="search-form__filter-box">
-                    <label className='search-form__checkbox'>
-                        <input className='search-form__input-invisible' type='checkbox'/>
-                        <span className='search-form__input-visible'></span>
-
-                        <span className='search-form__label'>Короткометражки</span>
-                    </label>
-                </div>
+            <form className="search-form__form" onSubmit={handleSubmit}>
+                <input 
+                className="search-form__input" 
+                type="text" 
+                placeholder="Фильм" 
+                name="query" 
+                value={inputValue || ''}
+                onChange={handleChange}
+                required
+                />
+                <span className="search-form__error">{searchFormError}</span>
+                <button 
+                className="search-form__btn" 
+                type="submit"
+                ></button>
+                <Checkbox
+                toggleCheckbox={toggleCheckbox}
+                checkboxOn={checkboxOn}
+                />
             </form>
         </div>
+        </>
     );
 };
 
